@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using net_project.Data;
 
@@ -11,9 +12,11 @@ using net_project.Data;
 namespace net_project.Migrations
 {
     [DbContext(typeof(TemplateContext))]
-    partial class TemplateContextModelSnapshot : ModelSnapshot
+    [Migration("20240125123808_Test")]
+    partial class Test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,21 +87,27 @@ namespace net_project.Migrations
             modelBuilder.Entity("net_project.Models.RelatieProfesorMaterie", b =>
                 {
                     b.Property<Guid>("ProfesorId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("MaterieId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("ProfesorId", "MaterieId");
+                    b.Property<Guid>("ProfesorId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ProfesorId");
 
                     b.HasIndex("MaterieId");
+
+                    b.HasIndex("ProfesorId1");
 
                     b.ToTable("Relatii");
                 });
 
             modelBuilder.Entity("net_project.Models.RelatieProfesorMaterie", b =>
                 {
-                    b.HasOne("net_project.Models.Materie", "Materie")
+                    b.HasOne("net_project.Models.Materie", "Materii")
                         .WithMany("Relatii")
                         .HasForeignKey("MaterieId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -106,11 +115,11 @@ namespace net_project.Migrations
 
                     b.HasOne("net_project.Models.Profesor", "Profesor")
                         .WithMany("Relatii")
-                        .HasForeignKey("ProfesorId")
+                        .HasForeignKey("ProfesorId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Materie");
+                    b.Navigation("Materii");
 
                     b.Navigation("Profesor");
                 });

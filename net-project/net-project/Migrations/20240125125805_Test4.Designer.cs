@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using net_project.Data;
 
@@ -11,9 +12,11 @@ using net_project.Data;
 namespace net_project.Migrations
 {
     [DbContext(typeof(TemplateContext))]
-    partial class TemplateContextModelSnapshot : ModelSnapshot
+    [Migration("20240125125805_Test4")]
+    partial class Test4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,24 +92,29 @@ namespace net_project.Migrations
                     b.Property<Guid>("MaterieId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("MaterieId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("ProfesorId", "MaterieId");
 
                     b.HasIndex("MaterieId");
+
+                    b.HasIndex("MaterieId1");
 
                     b.ToTable("Relatii");
                 });
 
             modelBuilder.Entity("net_project.Models.RelatieProfesorMaterie", b =>
                 {
-                    b.HasOne("net_project.Models.Materie", "Materie")
+                    b.HasOne("net_project.Models.Profesor", "Profesor")
                         .WithMany("Relatii")
                         .HasForeignKey("MaterieId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("net_project.Models.Profesor", "Profesor")
+                    b.HasOne("net_project.Models.Materie", "Materie")
                         .WithMany("Relatii")
-                        .HasForeignKey("ProfesorId")
+                        .HasForeignKey("MaterieId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
